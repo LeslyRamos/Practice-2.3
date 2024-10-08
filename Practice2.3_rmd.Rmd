@@ -1,0 +1,76 @@
+
+title: "Practice2.3"
+author: "Lesly"
+date: "2024-10-07"
+output: html_document
+---
+
+## Practice 2.3
+
+### Data specifications: It contains data on 8 days length of Easter grass exposed to different treatments. The 6 variables day3 to day8 are the mean length of the grass on the respective day. germinate is the number of germinated seeds.bed is a factor with four levels (mould1,mould2, paper4, paper8) indicating where the grass grew and how thick it was. treatment has two levels water and nutrient indicating the irrigation scheme (pure water or enriched with nutrients). spatial1 and spatial2 are the vertical and horizontal position of the plot respectively. The variables row and column are meaningless and should be removed.
+
+```{r}
+
+library (tidyr)
+library(dplyr)
+grass<-read.table('rairuoho.txt', header=T, sep='\t', dec='.')
+grass
+```
+
+
+
+
+### Change "nutrient" for "enriched". Update the table grass
+```{r}
+grass <- grass %>%
+  mutate(treatment = ifelse(treatment == "nutrient", "enriched", treatment))
+grass
+```
+#### Note: It runs perfectly, but when I render it says: could not find function "%>%"
+
+
+
+
+### Reformat the table so that the day is as a single variable (factor) with 6 levels (day3, day4, day5, day6, day7, day8). 
+### Another variable length is created to get the length of the grass on the given day.
+```{r}
+grass <- grass %>%
+  pivot_longer(cols = day3:day8,
+  names_to = "day",
+  values_to = "length")
+grass
+```
+#### Note: I don't know why it keeps saying that column "day3" does not exist. However, after trying different codes (at the end I am not sure which one it did select.) I got the columns arranged, without the column names.
+
+
+
+
+### The variables Spatial1 and Spatial2 are merged to obtain the following format for the spatial coordinates of an observation upper_left. 
+```{r}
+grass <- grass %>%
+  unite(spatial, spatial1, spatial2, sep = "_")
+grass
+```
+#### Note: It says that column "spatial1" does not exist, however the code worked to merged both columns
+
+
+
+### Remove the variables row and column.
+```{r}
+grasshide<-dplyr::select(grass, -row, -column)
+grasshide
+```
+
+
+
+
+### Reorder the columns on the table, I moved "day" and "length" at the beginning of the table.
+```{r}
+grasshide <- grasshide %>%
+  select(day, length, everything())
+grasshide
+```
+#### Note: same error here with the pipe operator. Whenever I render it says: could not find function "%>%"
+
+#Make the column "day" as a factor
+# data$long <- as.factor(day$long)

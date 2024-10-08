@@ -1,3 +1,10 @@
+---
+title: "Practice2.3"
+author: "Lesly"
+date: "2024-10-07"
+output: html_document
+---
+
 #Practice 2.3
 ##Data specifications: It contains data on 8 days length of Easter grass exposed to different treatments. The 6 variables day3 to day8 are the mean length of the grass on the respective day. germinate is the number of germinated seeds.bed is a factor with four levels (mould1,mould2, paper4, paper8) indicating where the grass grew and how thick it was. treatment has two levels water and nutrient indicating the irrigation scheme (pure water or enriched with nutrients). spatial1 and spatial2 are the vertical and horizontal position of the plot respectively. The variables row and column are meaningless and should be removed.
 grass<-read.table('rairuoho.txt', header=T, sep='\t', dec='.')
@@ -26,7 +33,6 @@ grass <- grass %>%
 #Remove the variables row and column.
 grasshide<-dplyr::select(grass, -row, -column)
 grasshide
-
 
 #Reorder the columns on the table, I moved "day" and "length" at the beginning of the table.
 grasshide <- grasshide %>%
